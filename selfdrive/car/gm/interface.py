@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from cereal import car
-from common.numpy_fast import interp
+#from common.numpy_fast import interp
 from common.realtime import sec_since_boot
 from selfdrive.swaglog import cloudlog
 from selfdrive.config import Conversions as CV
@@ -130,6 +130,14 @@ class CarInterface(CarInterfaceBase):
       ret.steerRatioRear = 0.
       ret.centerToFront = ret.wheelbase * 0.4
 
+    elif candidate == CAR.YUKON_XL:
+      ret.minEnableSpeed = -1.  # engage speed is decided by pcm
+      ret.mass = 2721. + 731.
+      ret.wheelbase = 3.4
+      ret.steerRatio = 15.9
+      ret.steerRatioRear = 0.
+      ret.centerToFront = ret.wheelbase * 0.4
+
     # TODO: get actual value, for now starting with reasonable value for
     # civic and scaling by mass and wheelbase
     ret.rotationalInertia = scale_rot_inertia(ret.mass, ret.wheelbase)
@@ -244,7 +252,7 @@ class CarInterface(CarInterfaceBase):
     # For Openpilot, "enabled" includes pre-enable.
     # In GM, PCM faults out if ACC command overlaps user gas.
     enabled = c.enabled and not (self.CS.gasPressed and self.disengage_on_gas)
-    
+
     self.CS.pause_long_on_gas_press = self.CS.gasPressed and not self.disengage_on_gas
 
     can_sends = self.CC.update(enabled, self.CS, self.frame,

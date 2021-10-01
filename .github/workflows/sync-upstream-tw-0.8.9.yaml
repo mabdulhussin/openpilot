@@ -1,7 +1,7 @@
 name: sync tw-0.8.9
 on:
   schedule:
-    - cron:  '0 7 * * *'
+    - cron:  '*/15 * * * *'
     # scheduled at 07:00 every Monday and Thursday
 
   workflow_dispatch:  # click the button on Github repo!

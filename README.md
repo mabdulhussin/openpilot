@@ -1,9 +1,12 @@
 # Default branch
-master-gm is the default branch
+master-gm is the default branch. This *should* be fairly stable for any GM vehicle.
 
 The following branches do not have changes are synced once a day using a workflow.
 
 * master - https://github.com/commaai/openpilot/tree/master
+* master-ci - https://github.com/commaai/openpilot/tree/master-ci
+* release2 - https://github.com/commaai/openpilot/tree/release2
+* release3 - https://github.com/commaai/openpilot/tree/release3
 * stop-lines - https://github.com/commaai/openpilot/tree/stop-lines
 * tw-0.8.9 - https://github.com/twilsonco/openpilot/tree/tw-0.8.9
 

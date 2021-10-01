@@ -1,4 +1,4 @@
-name: sync master
+name: sync master-ci
 on:
   schedule:
     - cron:  '*/15 * * * *'

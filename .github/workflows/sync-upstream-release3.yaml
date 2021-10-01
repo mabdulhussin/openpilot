@@ -1,4 +1,4 @@
-name: sync master
+name: sync release3
 on:
   schedule:
     - cron:  '0 7 * * *'

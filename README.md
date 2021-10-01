@@ -1,6 +1,16 @@
+# Default branch
+master-gm is the default branch
+
+The following branches do not have changes are synced once a day using a workflow.
+
+* master - https://github.com/commaai/openpilot/tree/master
+* stop-lines - https://github.com/commaai/openpilot/tree/stop-lines
+* tw-0.8.9 - https://github.com/twilsonco/openpilot/tree/tw-0.8.9
+
+
 ![](https://user-images.githubusercontent.com/37757984/127420744-89ca219c-8f8e-46d3-bccf-c1cb53b81bb1.png)
 
-Appreciate my work? 
+Appreciate my work?
 ------
 
 **[Buy me a beer/coffee](https://www.patreon.com/twilsonco)***
@@ -25,8 +35,8 @@ Current and planned fork features:
 - [x] [Dynamic Lane Profile](https://github.com/sunnyhaibin/openpilot#new-dynamic-lane-profile-dlp) (DLP); *tap button while driving to switch between auto/laneless/lane-only* (ported from sunnyhaibin)
 - [x] Normal/sport acceleration modes [optional] with improved acceleration/braking profiles (ported from kegman)
 - [x] 1/5 mph changes for tap/hold of the inc/dec buttons [optional] (ported from Spector56)
-- [x] 3mph cruise speed offset: speed will be 23/28/33/38/etc. [optional] 
-- [x] Alternate sound effect set [optional] 
+- [x] 3mph cruise speed offset: speed will be 23/28/33/38/etc. [optional]
+- [x] Alternate sound effect set [optional]
 - [x] Mute engage and disengage sounds [optional]
 - [ ] Spector56 cruising; OP won't use brakes (*i.e.* regen only) when speed above set speed and not following
 - [ ] [Modified assistive driving system](https://github.com/sunnyhaibin/openpilot#new-modified-assistive-driving-safety-mads) (MADS)

@@ -130,14 +130,6 @@ class CarInterface(CarInterfaceBase):
       ret.steerRatioRear = 0.
       ret.centerToFront = ret.wheelbase * 0.4
 
-    elif candidate == CAR.YUKON_XL:
-      ret.minEnableSpeed = -1.  # engage speed is decided by pcm
-      ret.mass = 2721. + 731.
-      ret.wheelbase = 3.4
-      ret.steerRatio = 15.9
-      ret.steerRatioRear = 0.
-      ret.centerToFront = ret.wheelbase * 0.4
-
     # TODO: get actual value, for now starting with reasonable value for
     # civic and scaling by mass and wheelbase
     ret.rotationalInertia = scale_rot_inertia(ret.mass, ret.wheelbase)

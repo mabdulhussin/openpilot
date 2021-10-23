@@ -130,6 +130,16 @@ class CarInterface(CarInterfaceBase):
       ret.steerRatioRear = 0.
       ret.centerToFront = ret.wheelbase * 0.4
 
+    elif candidate == CAR.ESCALADE_ESV:
+      ret.minEnableSpeed = -1.  # engage speed is decided by pcm
+      ret.STD_CARGO_KG = 662.
+      ret.mass = 2739. + STD_CARGO_KG
+      ret.wheelbase = 3.302
+      ret.steerRatio = 17.3
+      ret.steerRatioRear = 0.
+      ret.centerToFront = ret.wheelbase * 0.49
+      ret.FOLLOW_AGGRESSION = 0.13
+
     # TODO: get actual value, for now starting with reasonable value for
     # civic and scaling by mass and wheelbase
     ret.rotationalInertia = scale_rot_inertia(ret.mass, ret.wheelbase)

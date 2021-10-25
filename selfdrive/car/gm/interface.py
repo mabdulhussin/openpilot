@@ -134,7 +134,7 @@ class CarInterface(CarInterfaceBase):
 
       # Faster accel
       ret.longitudinalTuning.kpBP = [5., 35.]
-      ret.longitudinalTuning.kpV = [4.8, 3.0]
+      ret.longitudinalTuning.kpV = [6.0, 4.0]
       ret.longitudinalTuning.kiBP = [0.]
       ret.longitudinalTuning.kiV = [0.36]
 

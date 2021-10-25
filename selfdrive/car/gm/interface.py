@@ -133,8 +133,8 @@ class CarInterface(CarInterfaceBase):
       tire_stiffness_factor = 1.0
 
       # Faster accel
-      ret.longitudinalTuning.kpBP = [5., 35.]
-      ret.longitudinalTuning.kpV = [6, 3]
+      ret.longitudinalTuning.kpBP = [0]
+      ret.longitudinalTuning.kpV = [10]
 
 
     # TODO: get actual value, for now starting with reasonable value for

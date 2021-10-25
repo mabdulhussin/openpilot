@@ -7,9 +7,9 @@ Ecu = car.CarParams.Ecu
 class CarControllerParams():
   def __init__(self):
     self.STEER_MAX = 300
-    self.STEER_STEP = 4              # Stock LKAS active send rate of 50Hz
-    self.STEER_DELTA_UP = 10          # ~0.75s time to peak torque (255/50hz/0.75s)
-    self.STEER_DELTA_DOWN = 20       # ~0.3s from peak torque to zero
+    self.STEER_STEP = 2              # how often we update the steer cmd
+    self.STEER_DELTA_UP = 7          # ~0.75s time to peak torque (255/50hz/0.75s)
+    self.STEER_DELTA_DOWN = 17       # ~0.3s from peak torque to zero
     self.MIN_STEER_SPEED = 3.
     self.STEER_DRIVER_ALLOWANCE = 50   # allowed driver torque before start limiting
     self.STEER_DRIVER_MULTIPLIER = 4   # weight driver torque heavily
@@ -26,7 +26,7 @@ class CarControllerParams():
     ZERO_GAS = 2048
     MAX_BRAKE = 350             # Should be around 3.5m/s^2, including regen
 
-    self.ACCEL_MAX = 4.0 # m/s^2
+    self.ACCEL_MAX = 2.0 # m/s^2
 
     # Allow small margin below -3.5 m/s^2 from ISO 15622:2018 since we
     # perform the closed loop control, and might need some

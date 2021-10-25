@@ -6,7 +6,7 @@ Ecu = car.CarParams.Ecu
 
 class CarControllerParams():
   def __init__(self):
-    self.STEER_MAX = 450
+    self.STEER_MAX = 300
     self.STEER_STEP = 4              # Stock LKAS active send rate of 50Hz
     self.STEER_DELTA_UP = 10          # ~0.75s time to peak torque (255/50hz/0.75s)
     self.STEER_DELTA_DOWN = 20       # ~0.3s from peak torque to zero

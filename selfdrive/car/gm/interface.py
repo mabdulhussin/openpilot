@@ -121,15 +121,8 @@ class CarInterface(CarInterfaceBase):
       #PID tunning not to prevent oversteer
       #ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[10., 41.0], [10., 41.0]]
       #ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.13, 0.24], [0.01, 0.02]]
-      #ret.lateralTuning.pid.kf = 0.000045
+      ret.lateralTuning.pid.kf = 0.000045
       tire_stiffness_factor = 1.0
-
-      ret.lateralTuning.pid.kpBP = [0., 40.]
-      ret.lateralTuning.pid.kpV = [0., 0.17]
-      ret.lateralTuning.pid.kiBP = [0.]
-      ret.lateralTuning.pid.kiV = [0.]
-      ret.lateralTuning.pid.kf = 1. # get_steer_feedforward_volt()
-      ret.steerActuatorDelay = 0.2
 
     # TODO: get actual value, for now starting with reasonable value for
     # civic and scaling by mass and wheelbase

@@ -134,9 +134,8 @@ class CarInterface(CarInterfaceBase):
 
       # Faster accel
       ret.longitudinalTuning.kpBP = [5., 35.]
-      ret.longitudinalTuning.kpV = [8.0, 5.0]
-      ret.longitudinalTuning.kiBP = [0.]
-      ret.longitudinalTuning.kiV = [0.36]
+      ret.longitudinalTuning.kpV = [6, 3]
+
 
     # TODO: get actual value, for now starting with reasonable value for
     # civic and scaling by mass and wheelbase

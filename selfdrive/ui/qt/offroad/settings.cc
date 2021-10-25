@@ -96,7 +96,7 @@ TogglesPanel::TogglesPanel(QWidget *parent) : QWidget(parent) {
                                   this));
   toggles.append(new ParamControl("SpeedLimitPercOffset",
                                   "Enable Speed Limit Offset",
-                                  "Set speed limit slightly higher than actual speed limit for a more natural drive.",
+                                  "4.75mph offset below 55mph, 14.75mph offset above 55mph",
                                   "../assets/offroad/icon_speed_limit_percent.png",
                                   this));
   toggles.append(new ParamControl("StockSpeedAdjust",

@@ -10,7 +10,7 @@ V_CRUISE_MAX = 145
 V_CRUISE_MIN = 5
 V_CRUISE_DELTA = 5
 V_CRUISE_OFFSET = 3
-V_CRUISE_OFFSET_DEFAULT = 3
+V_CRUISE_OFFSET_DEFAULT = 9
 V_CRUISE_ENABLE_MIN = 5
 LAT_MPC_N = 16
 LON_MPC_N = 32
@@ -58,7 +58,7 @@ def set_v_cruise_offset(do_offset):
     V_CRUISE_OFFSET = 0
 
 def update_v_cruise(v_cruise_kph, buttonEvents, enabled, cur_time, accel_pressed,decel_pressed,accel_pressed_last,decel_pressed_last, fastMode, fast_mode_enabled, vEgo, v_cruise_last_changed):
-  
+
   if fast_mode_enabled:
     if enabled:
       if accel_pressed:

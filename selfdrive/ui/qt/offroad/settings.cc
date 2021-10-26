@@ -100,7 +100,7 @@ TogglesPanel::TogglesPanel(QWidget *parent) : QWidget(parent) {
                                   "../assets/offroad/icon_speed_limit_percent.png",
                                   this));
   toggles.append(new ParamControl("StockSpeedAdjust",
-                                  "Press/hold for 1mph/5mph speed adjustment",
+                                  "Press/hold for 1mph/5mph adjust",
                                   "Like stock ACC, press/hold the cruise accel/decel buttons for 1mph/5mph.",
                                   "../assets/offroad/icon_stock_adjust_speed.png",
                                   this));
@@ -150,12 +150,12 @@ TogglesPanel::TogglesPanel(QWidget *parent) : QWidget(parent) {
                                   "../assets/offroad/icon_brake_disc.png",
                                   this));
   toggles.append(new ParamControl("CustomSounds",
-                                  "Alternative sounds (2x restart car to apply)",
+                                  "Alternative sounds (2x restart)",
                                   "Uses alternative set of sound effects.",
                                   "../assets/offroad/icon_custom_sounds.png",
                                   this));
   toggles.append(new ParamControl("SilentEngageDisengage",
-                                  "Silent engage/disengage (2x restart car to apply)",
+                                  "Silent engage/disengage (2x restart)",
                                   "Mute engage and disengage sounds.",
                                   "../assets/offroad/icon_mute.png",
                                   this));

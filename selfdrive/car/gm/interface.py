@@ -24,7 +24,7 @@ class CarInterface(CarInterfaceBase):
 
   # Volt determined by iteratively plotting and minimizing error for f(angle, speed) = steer.
   def get_steer_feedforward(self, desired_angle, v_ego):
-    if self.CP.carFingerprint in [CAR.VOLT,  CAR.ESCALADE_ESV]:
+    if self.CP.carFingerprint in [CAR.VOLT]:
       # Sigmoid maps [-inf,inf] to [-1,1].
       # This scalar gives sigmoid(34.4 deg) = sigmoid(1) = 0.5.
       # 1 / 0.02904609 = 34.4 deg ~= 36 deg ~= 1/10 circle? Arbitrary scaling?
@@ -152,18 +152,10 @@ class CarInterface(CarInterfaceBase):
       ret.steerRatioRear = 0.
       ret.centerToFront = ret.wheelbase * 0.49
       #PID tunning to prevent jerky steering
-      ##ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[10., 41.0], [10., 41.0]]
-      ##ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.13, 0.24], [0.01, 0.02]]
-      ##ret.lateralTuning.pid.kf = 0.000045
-      ##tire_stiffness_factor = 1.0
-
-
-      ret.lateralTuning.pid.kpBP = [0., 40.]
-      ret.lateralTuning.pid.kpV = [0., 0.16]
-      ret.lateralTuning.pid.kiBP = [0.]
-      ret.lateralTuning.pid.kiV = [0.1]
-      ret.lateralTuning.pid.kf = 1. # !!! ONLY for sigmoid feedforward !!!
-      ret.steerActuatorDelay = 0.2
+      ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[10., 41.0], [10., 41.0]]
+      ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.13, 0.24], [0.01, 0.02]]
+      ret.lateralTuning.pid.kf = 0.000045
+      tire_stiffness_factor = 1.0
 
     # TODO: get actual value, for now starting with reasonable value for
     # civic and scaling by mass and wheelbase

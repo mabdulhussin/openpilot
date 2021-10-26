@@ -1,7 +1,7 @@
 [submodule "panda"]
 	path = panda
-	url = ../../gibby/panda.git
-	branch = panda_patch_gm_steer_max_600
+	url = ../../twilsonco/panda.git
+	branch = panda_patch
 [submodule "opendbc"]
 	path = opendbc
 	url = ../../commaai/opendbc.git

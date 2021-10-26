@@ -73,7 +73,7 @@ TogglesPanel::TogglesPanel(QWidget *parent) : QWidget(parent) {
                                   "In this mode openpilot will ignore lanelines and just drive how it thinks a human would.",
                                   "../assets/offroad/icon_road.png",
                                   this));
-  
+
   toggles.append(new ParamControl("HandsOnWheelMonitoring",
                                   "Enable Hands on Wheel Monitoring",
                                   "Monitor and alert when driver is not keeping the hands on the steering wheel.",
@@ -96,7 +96,7 @@ TogglesPanel::TogglesPanel(QWidget *parent) : QWidget(parent) {
                                   this));
   toggles.append(new ParamControl("SpeedLimitPercOffset",
                                   "Enable Speed Limit Offset",
-                                  "Set speed limit slightly higher than actual speed limit for a more natural drive.",
+                                  "9mph offset between 30-50mph, 14mph offset above 55mph.",
                                   "../assets/offroad/icon_speed_limit_percent.png",
                                   this));
   toggles.append(new ParamControl("StockSpeedAdjust",

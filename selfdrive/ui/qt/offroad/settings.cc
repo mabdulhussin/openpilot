@@ -100,12 +100,12 @@ TogglesPanel::TogglesPanel(QWidget *parent) : QWidget(parent) {
                                   "../assets/offroad/icon_speed_limit_percent.png",
                                   this));
   toggles.append(new ParamControl("StockSpeedAdjust",
-                                  "Press/hold for 1mph/5mph cruise speed adjustment",
+                                  "Press/hold for 1mph/5mph speed adjustment",
                                   "Like stock ACC, press/hold the cruise accel/decel buttons for 1mph/5mph.",
                                   "../assets/offroad/icon_stock_adjust_speed.png",
                                   this));
   toggles.append(new ParamControl("CruiseSpeedOffset",
-                                  "Enable Cruise Speed Offset (+3mph)",
+                                  "Enable Speed Offset (+3mph)",
                                   "When adjusting, cruise speed will be {8, 13, 18, 23, 28} mph.",
                                   "../assets/offroad/icon_speed_offset.png",
                                   this));

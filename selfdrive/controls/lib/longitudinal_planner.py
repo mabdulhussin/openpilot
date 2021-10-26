@@ -35,7 +35,7 @@ _A_CRUISE_MIN_BP = [0., 5., 10., 20., 55.]
 # need fast accel at very low speed for stop and go
 # make sure these accelerations are smaller than mpc limits
 _A_CRUISE_MAX_V = [1.6, 1.8, 1.6, .6, .4]
-_A_CRUISE_MAX_V_SPORT = [3.0, 3.2, 3.0, 2.0, 2.0]
+_A_CRUISE_MAX_V_SPORT = [9.0, 9.2, 9.0, 6.0, 6.0]
 _A_CRUISE_MAX_V_FOLLOWING = [2.0, 1.8, 2.0, .6, .4]
 _A_CRUISE_MAX_BP = [0., 5., 10., 20., 55.]
 
@@ -100,7 +100,7 @@ class Planner():
     self.speed_limit_controller = SpeedLimitController()
     self.events = Events()
     self.turn_speed_controller = TurnSpeedController()
-    
+
     self.accel_mode = int(Params().get_bool("SportAccel")) # 0 = normal, 1 = sport;
     self.coasting_lead_d = -1. # [m] lead distance. -1. if no lead
     self.coasting_lead_v = -1. # lead "absolute"" velocity
@@ -128,7 +128,7 @@ class Planner():
     else:
       self.coasting_lead_d = -1.
       self.coasting_lead_v = -1.
-    
+
     if not enabled or sm['carState'].gasPressed:
       self.v_desired = v_ego
       self.a_desired = a_ego

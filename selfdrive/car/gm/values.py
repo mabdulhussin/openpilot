@@ -7,7 +7,7 @@ Ecu = car.CarParams.Ecu
 class CarControllerParams():
   def __init__(self):
     self.STEER_MAX = 300
-    self.STEER_STEP = 2              # how often we update the steer cmd
+    self.STEER_STEP = 2              # Stock LKAS active send rate of 50Hz
     self.STEER_DELTA_UP = 7          # ~0.75s time to peak torque (255/50hz/0.75s)
     self.STEER_DELTA_DOWN = 17       # ~0.3s from peak torque to zero
     self.MIN_STEER_SPEED = 3.
@@ -69,6 +69,7 @@ class CanBus:
   OBSTACLE = 1
   CHASSIS = 2
   SW_GMLAN = 3
+  LOOPBACK = 128
 
 FINGERPRINTS = {
   # Astra BK MY17, ASCM unplugged

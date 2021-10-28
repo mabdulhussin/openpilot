@@ -34,7 +34,6 @@ class ET:
   SOFT_DISABLE = 'softDisable'
   IMMEDIATE_DISABLE = 'immediateDisable'
   PERMANENT = 'permanent'
-  RESET_V_CRUISE = 'resetVCruise'
 
 
 # get event name from enum
@@ -596,11 +595,6 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
     ET.USER_DISABLE: EngagementAlert(AudibleAlert.chimeDisengage),
   },
 
-  EventName.buttonMainCancel: {
-    ET.USER_DISABLE: EngagementAlert(AudibleAlert.chimeDisengage),
-    ET.RESET_V_CRUISE: EngagementAlert(AudibleAlert.none),
-  },
-
   EventName.brakeHold: {
     ET.USER_DISABLE: EngagementAlert(AudibleAlert.chimeDisengage),
     ET.NO_ENTRY: NoEntryAlert("Brake Hold Active"),
@@ -932,7 +926,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
 
   EventName.stoppedWaitForGas: {
     ET.PERMANENT: Alert(
-      "Press gas to resume",
+      "Stopped: Press gas to resume",
       "You can rest your foot now.",
       AlertStatus.normal, AlertSize.small,
       Priority.LOWER, VisualAlert.none, AudibleAlert.none, 0., 0.4, .3),

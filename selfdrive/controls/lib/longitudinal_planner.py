@@ -79,7 +79,7 @@ class Planner():
     self.CP = CP
     self.mpcs = {}
     self.mpcs['lead0'] = LeadMpc(0)
-    self.mpcs['lead1'] = LeadMpc(self.mpcs['lead0'].lead_id + 3)
+    self.mpcs['lead1'] = LeadMpc(1)
     self.mpcs['cruise'] = LongitudinalMpc()
     self.mpcs['custom'] = LimitsLongitudinalMpc()
 
@@ -89,7 +89,7 @@ class Planner():
     self.v_desired = 0.0
     self.a_desired = 0.0
     self.longitudinalPlanSource = 'cruise'
-    self.alpha = np.exp(-DT_MDL/2.0)
+    self.alpha = np.exp(-CP.radarTimeStep/2.0)
     self.lead_0 = log.ModelDataV2.LeadDataV3.new_message()
     self.lead_1 = log.ModelDataV2.LeadDataV3.new_message()
 
@@ -128,6 +128,7 @@ class Planner():
     else:
       self.coasting_lead_d = -1.
       self.coasting_lead_v = -1.
+    
 
     if not enabled or sm['carState'].gasPressed:
       self.v_desired = v_ego
@@ -168,6 +169,8 @@ class Planner():
         self.j_desired_trajectory = self.mpcs[key].j_solution[:CONTROL_N]
         next_a = self.mpcs[key].a_solution[5]
 
+
+
     # determine fcw
     if self.mpcs['lead0'].new_lead:
       self.fcw_checker.reset_lead(cur_time)
@@ -183,8 +186,8 @@ class Planner():
 
     # Interpolate 0.05 seconds and save as starting point for next iteration
     a_prev = self.a_desired
-    self.a_desired = float(interp(DT_MDL, T_IDXS[:CONTROL_N], self.a_desired_trajectory))
-    self.v_desired = self.v_desired + DT_MDL * (self.a_desired + a_prev)/2.0
+    self.a_desired = float(interp(CP.radarTimeStep, T_IDXS[:CONTROL_N], self.a_desired_trajectory))
+    self.v_desired = self.v_desired + CP.radarTimeStep * (self.a_desired + a_prev)/2.0
 
   def publish(self, sm, pm):
     plan_send = messaging.new_message('longitudinalPlan')
@@ -202,6 +205,10 @@ class Planner():
     longitudinalPlan.hasLead = self.mpcs['lead0'].status
     longitudinalPlan.leadDist = self.coasting_lead_d
     longitudinalPlan.leadV = self.coasting_lead_v
+    longitudinalPlan.desiredFollowDistance = self.mpcs['lead0'].tr
+    longitudinalPlan.leadDistCost = self.mpcs['lead0'].dist_cost
+    longitudinalPlan.leadAccelCost = self.mpcs['lead0'].accel_cost
+    longitudinalPlan.stoppingDistance = self.mpcs['lead0'].stopping_distance
     longitudinalPlan.longitudinalPlanSource = self.longitudinalPlanSource
     longitudinalPlan.fcw = self.fcw
 

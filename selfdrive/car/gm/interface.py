@@ -49,7 +49,7 @@ class CarInterface(CarInterfaceBase):
       return self.get_steer_feedforward_volt
     elif self.CP.carFingerprint == CAR.ACADIA:
       return self.get_steer_feedforward_acadia
-    elif self.CP.carFingerprint == CAR.ESCALADE_SV:
+    elif self.CP.carFingerprint == CAR.ESCALADE_ESV:
       return self.get_steer_feedforward_escalade_esv
     else:
       return CarInterfaceBase.get_steer_feedforward_default

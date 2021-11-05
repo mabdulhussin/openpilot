@@ -40,9 +40,9 @@ class CarInterface(CarInterfaceBase):
 
   @staticmethod
   def get_steer_feedforward_escalade_esv(desired_angle, v_ego):
-    desired_angle *= 0.01682054
+    desired_angle *= 0.01463516
     sigmoid = desired_angle / (1 + fabs(desired_angle))
-    return 0.16762972 * sigmoid * (v_ego + 10.028217)
+    return 0.12147129 * sigmoid * (v_ego + 0.02718132)
 
   def get_steer_feedforward_function(self):
     if self.CP.carFingerprint == CAR.VOLT:

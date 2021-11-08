@@ -175,6 +175,14 @@ class CarInterface(CarInterfaceBase):
       ret.lateralTuning.pid.kf = 0.000045
       tire_stiffness_factor = 1.0
 
+    elif candidate == CAR.SILVERADO:
+      ret.minEnableSpeed = -1.  # engage speed is decided by pcm
+      ret.mass = 2241. + STD_CARGO_KG
+      ret.wheelbase = 3.745
+      ret.steerRatio = 16.3 # From a 2019 SILVERADO
+      ret.centerToFront = ret.wheelbase * 0.49
+      tire_stiffness_factor = 1.0
+
     # TODO: get actual value, for now starting with reasonable value for
     # civic and scaling by mass and wheelbase
     ret.rotationalInertia = scale_rot_inertia(ret.mass, ret.wheelbase)

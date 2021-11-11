@@ -42,7 +42,7 @@ class CarInterface(CarInterfaceBase):
   def get_steer_feedforward_escalade_esv(desired_angle, v_ego):
     desired_angle *= 0.01463516
     sigmoid = desired_angle / (1 + fabs(desired_angle))
-    return 0.12147129 * sigmoid * (v_ego + 0.02718132)
+    return 0.12147129 * sigmoid * (v_ego + 20)
 
   def get_steer_feedforward_function(self):
     if self.CP.carFingerprint == CAR.VOLT:
@@ -188,16 +188,7 @@ class CarInterface(CarInterfaceBase):
       #ret.lateralTuning.pid.kf = 0.000045
       ret.lateralTuning.pid.kf = 1. # get_steer_feedforward_escalade_esv()
       tire_stiffness_factor = 1.0
-
-      ret.stoppingDecelRate = 0.3  # reach stopping target smoothly
-      ret.startingAccelRate = 6.0  # release brakes fast
       ret.startAccel = 1.6  # Accelerate from 0 faster
-      ret.longitudinalTuning.deadzoneBP = [0., 9.]
-      ret.longitudinalTuning.deadzoneV = [0., .15]
-      ret.longitudinalTuning.kpBP = [0., 5., 35.]
-      ret.longitudinalTuning.kiBP = [0., 35.]
-      ret.longitudinalTuning.kpV = [3.6, 2.4, 1.5]
-      ret.longitudinalTuning.kiV = [0.54, 0.36]
 
     # TODO: get actual value, for now starting with reasonable value for
     # civic and scaling by mass and wheelbase

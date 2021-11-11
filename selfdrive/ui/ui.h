@@ -70,7 +70,7 @@ typedef struct Alert {
   }
 } Alert;
 
-const Alert CONTROLS_WAITING_ALERT = {"openpilot Unavailable", "Waiting for controls to start", 
+const Alert CONTROLS_WAITING_ALERT = {"openpilot Unavailable", "Waiting for controls to start",
                                       "controlsWaiting", cereal::ControlsState::AlertSize::MID,
                                       AudibleAlert::NONE};
 
@@ -150,7 +150,8 @@ typedef enum UIMeasure { //rearrange here to adjust order when cycling measures
   MEMORY_USAGE_PERCENT,
   FREESPACE_STORAGE,
   FOLLOW_LEVEL,
-  
+  apply_gas,
+
   NUM_MEASURES
 } UIMeasure;
 
@@ -167,12 +168,12 @@ typedef struct UIScene {
   bool speed_limit_perc_offset;
   Rect speed_limit_sign_touch_rect;
   double last_speed_limit_sign_tap;
-  
+
   Rect wheel_touch_rect;
   bool wheel_rotates = true;
 
   cereal::PandaState::PandaType pandaType;
-  
+
 // measures
   int measure_min_num_slots = 0;
   int measure_max_num_slots = 10;
@@ -181,7 +182,7 @@ typedef struct UIScene {
   Rect measure_slot_touch_rects[10];
   int num_measures = UIMeasure::NUM_MEASURES; // the number of cases handled in ui_draw_measures() in paint.cc
   Rect speed_rect;
-  
+
   // actual measures
   float angleSteers;
   float angleSteersDes;
@@ -200,7 +201,7 @@ typedef struct UIScene {
   bool percentGradeIterRolled = false;
   float desiredFollowDistance, followDistanceCost, followAccelCost;
   float stoppingDistance;
-  
+
   float lastTime = 0., sessionInitTime = 0.;
 
   int lead_status;
@@ -209,18 +210,18 @@ typedef struct UIScene {
   // gps
   int satelliteCount;
   bool gpsOK;
-  
+
   // brake indicator
   int brake_percent;
   float brake_indicator_alpha;
   float brake_indicator_last_t;
-  
+
   // one-pedal mode fading. maxspeed rect at -1, fades away by 0, and one-pedal icon fades in by 1
   float one_pedal_fade = -1., one_pedal_fade_last_t = 0.;
   Rect one_pedal_touch_rect;
   Rect maxspeed_touch_rect;
   Rect brake_touch_rect;
-  
+
   int laneless_mode;
   Rect laneless_btn_touch_rect;
 
@@ -248,7 +249,7 @@ typedef struct UIScene {
   float light_sensor, accel_sensor, gyro_sensor;
   bool started, ignition, is_metric, longitudinal_control, end_to_end;
   uint64_t started_frame;
-  
+
   struct _LateralPlan
   {
     float laneWidth;
@@ -259,7 +260,7 @@ typedef struct UIScene {
 
     bool lanelessModeStatus;
   } lateralPlan;
-  
+
 } UIScene;
 
 typedef struct UIState {
@@ -290,7 +291,7 @@ typedef struct UIState {
   mat4 rear_frame_mat;
 
   bool awake;
-  
+
   bool is_metric;
 
   float car_space_transform[6];

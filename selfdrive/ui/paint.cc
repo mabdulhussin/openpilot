@@ -42,7 +42,7 @@ static void ui_draw_circle(UIState *s, float x, float y, float size, NVGcolor co
   nvgFill(s->vg);
 }
 
-static void ui_draw_speed_sign(UIState *s, float x, float y, int size, float speed, const char *subtext,
+static void ui_draw_speed_sign(UIState *s, float x, float y, int size, float speed, const char *subtext, 
                                float subtext_size, const char *font_name, bool is_map_sourced, bool is_active) {
   NVGcolor ring_color = is_active ? COLOR_RED : COLOR_BLACK_ALPHA(.2f * 255);
   NVGcolor inner_color = is_active ? COLOR_WHITE : COLOR_WHITE_ALPHA(.35f * 255);
@@ -60,13 +60,13 @@ static void ui_draw_speed_sign(UIState *s, float x, float y, int size, float spe
   if (is_map_sourced) {
     const int img_size = 35;
     const int img_y = int(y - 55);
-    ui_draw_image(s, {int(x - (img_size / 2)), img_y - (img_size / 2), img_size, img_size}, "map_source_icon",
+    ui_draw_image(s, {int(x - (img_size / 2)), img_y - (img_size / 2), img_size, img_size}, "map_source_icon", 
                   is_active ? 1. : .3);
   }
 }
 
 const float OneOverSqrt3 = 1.0 / sqrt(3.0);
-static void ui_draw_turn_speed_sign(UIState *s, float x, float y, int width, float speed, int curv_sign,
+static void ui_draw_turn_speed_sign(UIState *s, float x, float y, int width, float speed, int curv_sign, 
                                     const char *subtext, const char *font_name, bool is_active) {
   const float stroke_w = 15.0;
   NVGcolor border_color = is_active ? COLOR_RED : COLOR_BLACK_ALPHA(.2f * 255);
@@ -80,7 +80,7 @@ static void ui_draw_turn_speed_sign(UIState *s, float x, float y, int width, flo
   const float h1 = A * h2;
   const float L = 4.0 * R * OneOverSqrt3;
 
-  // Draw the internal triangle, compensate for stroke width. Needed to improve rendering when in inactive
+  // Draw the internal triangle, compensate for stroke width. Needed to improve rendering when in inactive 
   // state due to stroke transparency being different from inner transparency.
   nvgBeginPath(s->vg);
   nvgMoveTo(s->vg, x, y - R + cS);
@@ -90,7 +90,7 @@ static void ui_draw_turn_speed_sign(UIState *s, float x, float y, int width, flo
 
   nvgFillColor(s->vg, inner_color);
   nvgFill(s->vg);
-
+  
   // Draw the stroke
   nvgLineJoin(s->vg, NVG_ROUND);
   nvgStrokeWidth(s->vg, stroke_w);
@@ -108,7 +108,7 @@ static void ui_draw_turn_speed_sign(UIState *s, float x, float y, int width, flo
   if (curv_sign != 0) {
     const int img_size = 35;
     const int img_y = int(y - R + stroke_w + 30);
-    ui_draw_image(s, {int(x - (img_size / 2)), img_y, img_size, img_size},
+    ui_draw_image(s, {int(x - (img_size / 2)), img_y, img_size, img_size}, 
                   curv_sign > 0 ? "turn_left_icon" : "turn_right_icon", is_active ? 1. : .3);
   }
 
@@ -320,7 +320,7 @@ static void ui_draw_vision_maxspeed(UIState *s) {
     ui_draw_image(s, {rect.centerX() - brake_size, rect.centerY() - brake_size, brake_size * 2, brake_size * 2}, "one_pedal_mode", s->scene.one_pedal_fade);
     s->scene.one_pedal_touch_rect = pedal_rect;
     s->scene.maxspeed_touch_rect = {1,1,1,1};
-
+    
     // draw extra circle to indiate one-pedal engage on gas is enabled
     if (Params().getBool("OnePedalModeEngageOnGas")){
       nvgBeginPath(s->vg);
@@ -365,37 +365,37 @@ static void ui_draw_vision_speedlimit(UIState *s) {
 
   if (speedLimit > 0.0 && s->scene.engageable) {
     const Rect maxspeed_rect = {bdr_s * 2, int(bdr_s * 1.5), 184, 202};
-    Rect speed_sign_rect = Rect{maxspeed_rect.centerX() - speed_sgn_r,
-      maxspeed_rect.bottom() + bdr_s,
-      2 * speed_sgn_r,
+    Rect speed_sign_rect = Rect{maxspeed_rect.centerX() - speed_sgn_r, 
+      maxspeed_rect.bottom() + bdr_s, 
+      2 * speed_sgn_r, 
       2 * speed_sgn_r};
     const float speed = speedLimit * (s->scene.is_metric ? 3.6 : 2.2369362921);
     const float speed_offset = speedLimitOffset * (s->scene.is_metric ? 3.6 : 2.2369362921);
 
     auto speedLimitControlState = longitudinal_plan.getSpeedLimitControlState();
-    const bool force_active = s->scene.speed_limit_control_enabled &&
+    const bool force_active = s->scene.speed_limit_control_enabled && 
                               seconds_since_boot() < s->scene.last_speed_limit_sign_tap + 2.0;
-    const bool inactive = !force_active && (!s->scene.speed_limit_control_enabled ||
+    const bool inactive = !force_active && (!s->scene.speed_limit_control_enabled || 
                           speedLimitControlState == cereal::LongitudinalPlan::SpeedLimitControlState::INACTIVE);
-    const bool temp_inactive = !force_active && (s->scene.speed_limit_control_enabled &&
+    const bool temp_inactive = !force_active && (s->scene.speed_limit_control_enabled && 
                                speedLimitControlState == cereal::LongitudinalPlan::SpeedLimitControlState::TEMP_INACTIVE);
 
-    const int distToSpeedLimit = int(longitudinal_plan.getDistToSpeedLimit() *
+    const int distToSpeedLimit = int(longitudinal_plan.getDistToSpeedLimit() * 
                                      (s->scene.is_metric ? 1.0 : 3.28084) / 10) * 10;
     const bool is_map_sourced = longitudinal_plan.getIsMapSpeedLimit();
     const std::string distance_str = std::to_string(distToSpeedLimit) + (s->scene.is_metric ? "m" : "f");
     const std::string offset_str = speed_offset > 0.0 ? "+" + std::to_string((int)std::nearbyint(speed_offset)) : "";
     const std::string inactive_str = temp_inactive ? "TEMP" : "";
-    const std::string substring = inactive || temp_inactive ? inactive_str :
+    const std::string substring = inactive || temp_inactive ? inactive_str : 
                                                               distToSpeedLimit > 0 ? distance_str : offset_str;
     const float substring_size = inactive || temp_inactive || distToSpeedLimit > 0 ? 30.0 : 50.0;
 
-    ui_draw_speed_sign(s, speed_sign_rect.centerX(), speed_sign_rect.centerY(), speed_sgn_r, speed, substring.c_str(),
+    ui_draw_speed_sign(s, speed_sign_rect.centerX(), speed_sign_rect.centerY(), speed_sgn_r, speed, substring.c_str(), 
                        substring_size, "sans-bold", is_map_sourced, !inactive && !temp_inactive);
 
-    s->scene.speed_limit_sign_touch_rect = Rect{speed_sign_rect.x - speed_sgn_touch_pad,
+    s->scene.speed_limit_sign_touch_rect = Rect{speed_sign_rect.x - speed_sgn_touch_pad, 
                                                 speed_sign_rect.y - speed_sgn_touch_pad,
-                                                speed_sign_rect.w + 2 * speed_sgn_touch_pad,
+                                                speed_sign_rect.w + 2 * speed_sgn_touch_pad, 
                                                 speed_sign_rect.h + 2 * speed_sgn_touch_pad};
   }
 }
@@ -421,14 +421,14 @@ static void ui_draw_measures(UIState *s){
     const int y_mid = (y_max + y_min) / 2;
     const int slots_y_rng = slot_y_rng * (s->scene.measure_cur_num_slots <= 5 ? s->scene.measure_cur_num_slots : 5);
     const int slots_y_min = y_mid - (slots_y_rng / 2);
-
+  
     NVGcolor default_name_color = nvgRGBA(255, 255, 255, 200);
     NVGcolor default_unit_color = nvgRGBA(255, 255, 255, 200);
     NVGcolor default_val_color = nvgRGBA(255, 255, 255, 200);
     int default_val_font_size = 78;
     int default_name_font_size = 32;
     int default_unit_font_size = 38;
-
+  
     // determine bounding rectangle
     const int slots_r = brake_size + 6 + (s->scene.measure_cur_num_slots <= 5 ? 6 : 0);
     const int slots_w = (s->scene.measure_cur_num_slots <= 5 ? 2 : 4) * slots_r;
@@ -444,7 +444,7 @@ static void ui_draw_measures(UIState *s){
     nvgFill(s->vg);
 
     UIScene &scene = s->scene;
-
+    
     // now start from the top and draw the current set of metrics
     for (int i = 0; i < scene.measure_cur_num_slots; ++i){
       char name[16], val[16], unit[6];
@@ -455,18 +455,18 @@ static void ui_draw_measures(UIState *s){
       int val_font_size, label_font_size, unit_font_size;
       int g, b;
       float p;
-
+      
       val_color = default_val_color;
       label_color = default_name_color;
       unit_color = default_unit_color;
       val_font_size = default_val_font_size;
       label_font_size = default_name_font_size;
       unit_font_size = default_unit_font_size;
-
-      // switch to get metric strings/colors
+    
+      // switch to get metric strings/colors 
       switch (scene.measure_slots[i]){
 
-        case UIMeasure::CPU_TEMP_AND_PERCENT:
+        case UIMeasure::CPU_TEMP_AND_PERCENT: 
           {
           val_color = color_from_thermal_status(int(scene.deviceState.getThermalStatus()));
           if (s->is_metric) {
@@ -478,8 +478,8 @@ static void ui_draw_measures(UIState *s){
           snprintf(unit, sizeof(unit), "%d%%", scene.cpuPerc);
           snprintf(name, sizeof(name), "CPU");}
           break;
-
-        case UIMeasure::CPU_TEMP:
+        
+        case UIMeasure::CPU_TEMP: 
           {
           val_color = color_from_thermal_status(int(scene.deviceState.getThermalStatus()));
           if (s->is_metric) {
@@ -492,8 +492,8 @@ static void ui_draw_measures(UIState *s){
           }
           snprintf(name, sizeof(name), "CPU TEMP");}
           break;
-
-        case UIMeasure::MEMORY_TEMP:
+        
+        case UIMeasure::MEMORY_TEMP: 
           {
           val_color = color_from_thermal_status(int(scene.deviceState.getThermalStatus()));
           if (s->is_metric) {
@@ -506,15 +506,15 @@ static void ui_draw_measures(UIState *s){
           }
           snprintf(name, sizeof(name), "MEM TEMP");}
           break;
-
-        case UIMeasure::CPU_PERCENT:
+        
+        case UIMeasure::CPU_PERCENT: 
           {
           val_color = color_from_thermal_status(int(scene.deviceState.getThermalStatus()));
           snprintf(val, sizeof(val), "%d%%", scene.cpuPerc);
           snprintf(name, sizeof(name), "CPU PERC");}
           break;
-
-        case UIMeasure::AMBIENT_TEMP:
+        
+        case UIMeasure::AMBIENT_TEMP: 
           {
           val_color = color_from_thermal_status(int(scene.deviceState.getThermalStatus()));
           if (s->is_metric) {
@@ -527,18 +527,18 @@ static void ui_draw_measures(UIState *s){
           }
           snprintf(name, sizeof(name), "AMB TEMP");}
           break;
-
-        case UIMeasure::FANSPEED_PERCENT:
+        
+        case UIMeasure::FANSPEED_PERCENT: 
           {
           val_color = color_from_thermal_status(int(scene.deviceState.getThermalStatus()));
           snprintf(val, sizeof(val), "%d%%", scene.deviceState.getFanSpeedPercentDesired());
           snprintf(name, sizeof(name), "FAN");}
           break;
-
-        case UIMeasure::MEMORY_USAGE_PERCENT:
+        
+        case UIMeasure::MEMORY_USAGE_PERCENT: 
           {
           int mem_perc = scene.deviceState.getMemoryUsagePercent();
-          g = 255;
+          g = 255; 
           b = 255;
           p = 0.011764706 * (mem_perc); // red by 85%
           g -= int(0.5 * p * 255.);
@@ -549,8 +549,8 @@ static void ui_draw_measures(UIState *s){
           snprintf(val, sizeof(val), "%d%%", mem_perc);
           snprintf(name, sizeof(name), "MEM USED");}
           break;
-
-        case UIMeasure::FREESPACE_STORAGE:
+        
+        case UIMeasure::FREESPACE_STORAGE: 
           {
           int free_perc = scene.deviceState.getFreeSpacePercent();
           g = 0;
@@ -623,21 +623,14 @@ static void ui_draw_measures(UIState *s){
           snprintf(val, sizeof(val), "%.1f", scene.aEgo);
           snprintf(unit, sizeof(unit), "m/s²");
           break;}
-
-        case UIMeasure::apply_gas:
-          {
-          snprintf(name, sizeof(name), "apply_gas");
-          snprintf(val, sizeof(val), "%", scene.aEgo);
-          snprintf(unit, sizeof(unit), "");
-          break;}
-
+        
         case UIMeasure::JERK:
           {
           snprintf(name, sizeof(name), "JERK");
           snprintf(val, sizeof(val), "%.1f", scene.jEgo);
           snprintf(unit, sizeof(unit), "m/s³");
           break;}
-
+        
         case UIMeasure::LEAD_TTC:
           {
           snprintf(name, sizeof(name), "TTC");
@@ -703,7 +696,7 @@ static void ui_draw_measures(UIState *s){
             }
           }
           break;
-
+      
         case UIMeasure::LEAD_DESIRED_DISTANCE_LENGTH:
           {
             snprintf(name, sizeof(name), "REL:DES DIST");
@@ -742,7 +735,7 @@ static void ui_draw_measures(UIState *s){
             }
           }
           break;
-
+          
         case UIMeasure::LEAD_DISTANCE_TIME:
           {
           snprintf(name, sizeof(name), "REL DIST");
@@ -762,7 +755,7 @@ static void ui_draw_measures(UIState *s){
           }
           snprintf(unit, sizeof(unit), "s");}
           break;
-
+        
         case UIMeasure::LEAD_DESIRED_DISTANCE_TIME:
           {
           snprintf(name, sizeof(name), "REL:DES DIST");
@@ -783,7 +776,7 @@ static void ui_draw_measures(UIState *s){
           }
           snprintf(unit, sizeof(unit), "s");}
           break;
-
+        
         case UIMeasure::LEAD_COSTS:
           {
             snprintf(name, sizeof(name), "D:A COST");
@@ -799,7 +792,7 @@ static void ui_draw_measures(UIState *s){
           {
           snprintf(name, sizeof(name), "REL SPEED");
           if (scene.lead_status) {
-            g = 255;
+            g = 255; 
             b = 255;
             p = -0.2 * (scene.lead_v_rel);
             g -= int(0.5 * p * 255.);
@@ -822,8 +815,8 @@ static void ui_draw_measures(UIState *s){
             snprintf(unit, sizeof(unit), "mph");
           }}
           break;
-
-        case UIMeasure::LEAD_VELOCITY_ABS:
+        
+        case UIMeasure::LEAD_VELOCITY_ABS: 
           {
           snprintf(name, sizeof(name), "LEAD SPD");
           if (scene.lead_status) {
@@ -842,7 +835,7 @@ static void ui_draw_measures(UIState *s){
           }}
           break;
 
-        case UIMeasure::STEERING_ANGLE:
+        case UIMeasure::STEERING_ANGLE: 
           {
           snprintf(name, sizeof(name), "REAL STEER");
           float angleSteers = scene.angleSteers > 0. ? scene.angleSteers : -scene.angleSteers;
@@ -859,7 +852,7 @@ static void ui_draw_measures(UIState *s){
           }
           break;
 
-        case UIMeasure::DESIRED_STEERING_ANGLE:
+        case UIMeasure::DESIRED_STEERING_ANGLE: 
           {
           snprintf(name, sizeof(name), "REL:DES STR.");
           float angleSteers = scene.angleSteers > 0. ? scene.angleSteers : -scene.angleSteers;
@@ -881,7 +874,7 @@ static void ui_draw_measures(UIState *s){
           }
           break;
 
-        case UIMeasure::ENGINE_RPM:
+        case UIMeasure::ENGINE_RPM: 
           {
           snprintf(name, sizeof(name), "ENG RPM");
           if(scene.engineRPM == 0) {
@@ -890,7 +883,7 @@ static void ui_draw_measures(UIState *s){
           else {snprintf(val, sizeof(val), "%d", scene.engineRPM);}
           }
           break;
-
+        
         case UIMeasure::PERCENT_GRADE:
           {
           snprintf(name, sizeof(name), "GRADE");
@@ -910,7 +903,7 @@ static void ui_draw_measures(UIState *s){
           }}
           break;
 
-        case UIMeasure::FOLLOW_LEVEL:
+        case UIMeasure::FOLLOW_LEVEL: 
           {
             std::string gap;
             snprintf(name, sizeof(name), "GAP");
@@ -918,15 +911,15 @@ static void ui_draw_measures(UIState *s){
               case 1:
               gap =  "I";
               break;
-
+              
               case 2:
               gap =  "I I";
               break;
-
+              
               case 3:
               gap =  "I I I";
               break;
-
+              
               default:
               gap =  "";
               break;
@@ -944,7 +937,7 @@ static void ui_draw_measures(UIState *s){
       nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE);
       // now print the metric
       // first value
-
+      
       int vallen = strlen(val);
       if (vallen > 4){
         val_font_size -= (vallen - 4) * 5;
@@ -964,14 +957,14 @@ static void ui_draw_measures(UIState *s){
       nvgFontSize(s->vg, val_font_size);
       nvgFillColor(s->vg, val_color);
       nvgText(s->vg, x, y, val, NULL);
-
+    
       // now label
       y = slot_y_mid + slot_y_rng / 2 - 9;
       nvgFontFace(s->vg, "sans-regular");
       nvgFontSize(s->vg, label_font_size);
       nvgFillColor(s->vg, label_color);
       nvgText(s->vg, x, y, name, NULL);
-
+    
       // now unit
       if (strlen(unit) > 0){
         nvgSave(s->vg);
@@ -991,7 +984,7 @@ static void ui_draw_measures(UIState *s){
         nvgText(s->vg, 0, 0, unit, NULL);
         nvgRestore(s->vg);
       }
-
+    
       // update touch rect
       scene.measure_slot_touch_rects[i] = {slot_x, slot_y, slots_r * 2, slot_y_rng};
     }
@@ -1007,9 +1000,9 @@ static void ui_draw_vision_turnspeed(UIState *s) {
 
   if (show) {
     const Rect maxspeed_rect = {bdr_s * 2, int(bdr_s * 1.5), 184, 202};
-    Rect speed_sign_rect = Rect{maxspeed_rect.centerX() - speed_sgn_r,
-      maxspeed_rect.bottom() + 2 * (bdr_s + speed_sgn_r),
-      2 * speed_sgn_r,
+    Rect speed_sign_rect = Rect{maxspeed_rect.centerX() - speed_sgn_r, 
+      maxspeed_rect.bottom() + 2 * (bdr_s + speed_sgn_r), 
+      2 * speed_sgn_r, 
       maxspeed_rect.h};
     const float speed = turnSpeed * (s->scene.is_metric ? 3.6 : 2.2369362921);
 
@@ -1017,11 +1010,11 @@ static void ui_draw_vision_turnspeed(UIState *s) {
     const bool is_active = turnSpeedControlState > cereal::LongitudinalPlan::SpeedLimitControlState::TEMP_INACTIVE;
 
     const int curveSign = longitudinal_plan.getTurnSign();
-    const int distToTurn = int(longitudinal_plan.getDistToTurn() *
+    const int distToTurn = int(longitudinal_plan.getDistToTurn() * 
                                (s->scene.is_metric ? 1.0 : 3.28084) / 10) * 10;
     const std::string distance_str = std::to_string(distToTurn) + (s->scene.is_metric ? "m" : "f");
 
-    ui_draw_turn_speed_sign(s, speed_sign_rect.centerX(), speed_sign_rect.centerY(), speed_sign_rect.w, speed,
+    ui_draw_turn_speed_sign(s, speed_sign_rect.centerX(), speed_sign_rect.centerY(), speed_sign_rect.w, speed, 
                             curveSign, distToTurn > 0 ? distance_str.c_str() : "", "sans-bold", is_active);
   }
 }
@@ -1039,8 +1032,8 @@ static void ui_draw_vision_event(UIState *s) {
   auto longitudinal_plan = (*s->sm)["longitudinalPlan"].getLongitudinalPlan();
   auto visionTurnControllerState = longitudinal_plan.getVisionTurnControllerState();
   s->scene.wheel_touch_rect = {1,1,1,1};
-  if (s->scene.show_debug_ui &&
-      visionTurnControllerState > cereal::LongitudinalPlan::VisionTurnControllerState::DISABLED &&
+  if (s->scene.show_debug_ui && 
+      visionTurnControllerState > cereal::LongitudinalPlan::VisionTurnControllerState::DISABLED && 
       s->scene.engageable) {
     // draw a rectangle with colors indicating the state with the value of the acceleration inside.
     const int size = 184;
@@ -1052,7 +1045,7 @@ static void ui_draw_vision_event(UIState *s) {
     const QColor &color = tcs_colors[int(visionTurnControllerState)];
     NVGcolor nvg_color = nvgRGBA(color.red(), color.green(), color.blue(), alpha);
     ui_draw_rect(s->vg, rect, nvg_color, 10, 20.);
-
+    
     const float vision_turn_speed = longitudinal_plan.getVisionTurnSpeed() * (s->scene.is_metric ? 3.6 : 2.2369363);
     std::string acc_str = std::to_string((int)std::nearbyint(vision_turn_speed));
     nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE);
@@ -1065,7 +1058,7 @@ static void ui_draw_vision_event(UIState *s) {
     const int center_y = radius  + (bdr_s * 1.5);
     const QColor &color = bg_colors[(s->scene.car_state.getLkMode() ? s->status : UIStatus::STATUS_DISENGAGED)];
     NVGcolor nvg_color = nvgRGBA(color.red(), color.green(), color.blue(), color.alpha());
-
+  
     // draw circle behind wheel
     s->scene.wheel_touch_rect = {center_x - radius, center_y - radius, 2 * radius, 2 * radius};
     ui_fill_rect(s->vg, s->scene.wheel_touch_rect, nvg_color, radius);
@@ -1078,7 +1071,7 @@ static void ui_draw_vision_event(UIState *s) {
     }
     ui_draw_image(s, {-radius, -radius, 2*radius, 2*radius}, "wheel", 1.0f);
     nvgRestore(s->vg);
-
+    
     // draw extra circle to indiate paused low-speed one-pedal blinker steering is enabled
     if (s->scene.one_pedal_fade > 0. && Params().getBool("OnePedalPauseBlinkerSteering")){
       nvgBeginPath(s->vg);
@@ -1090,14 +1083,14 @@ static void ui_draw_vision_event(UIState *s) {
       nvgStrokeWidth(s->vg, 6);
       nvgStroke(s->vg);
     }
-
+    
     // draw hands on wheel pictogram under wheel pictogram.
     auto handsOnWheelState = (*s->sm)["driverMonitoringState"].getDriverMonitoringState().getHandsOnWheelState();
     if (handsOnWheelState >= cereal::DriverMonitoringState::HandsOnWheelState::WARNING) {
       NVGcolor color = COLOR_RED;
       if (handsOnWheelState == cereal::DriverMonitoringState::HandsOnWheelState::WARNING) {
         color = COLOR_YELLOW;
-      }
+      } 
       const int wheel_y = center_y + bdr_s + 2 * radius;
       ui_draw_circle_image(s, center_x, wheel_y, radius, "hands_on_wheel", color, 1.0f);
     }
@@ -1206,11 +1199,11 @@ static void draw_laneless_button(UIState *s) {
       nvgText(s->vg,btn_xc1,btn_yc-20,"Auto",NULL);
       nvgText(s->vg,btn_xc1,btn_yc+20,"Lane",NULL);
     }
-
-    s->scene.laneless_btn_touch_rect = Rect{center_x - laneless_btn_touch_pad,
+    
+    s->scene.laneless_btn_touch_rect = Rect{center_x - laneless_btn_touch_pad, 
                                                 center_y - laneless_btn_touch_pad,
-                                                radius + 2 * laneless_btn_touch_pad,
-                                                radius + 2 * laneless_btn_touch_pad};
+                                                radius + 2 * laneless_btn_touch_pad, 
+                                                radius + 2 * laneless_btn_touch_pad}; 
   }
 }
 

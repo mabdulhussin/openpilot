@@ -25,7 +25,7 @@ class CarController():
     self.packer_obj = CANPacker(DBC[CP.carFingerprint]['radar'])
     self.packer_ch = CANPacker(DBC[CP.carFingerprint]['chassis'])
 
-    self.debug_logging = False
+    self.debug_logging = True
     self.debug_log_time_step = 0.333
     self.last_debug_log_t = 0.
     if self.debug_logging:

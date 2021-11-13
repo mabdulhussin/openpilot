@@ -414,7 +414,7 @@ class Controls:
         self.CI.CS.one_pedal_brake_mode = min(1, self.CI.CS.one_pedal_last_brake_mode)
         self.CI.CS.follow_level = self.CI.CS.one_pedal_last_follow_level
       else:
-        self.v_cruise_kph = update_v_cruise(v_cruise, CS.buttonEvents, self.enabled and CS.cruiseState.enabled, cur_time, self.accel_pressed,self.decel_pressed, self.accel_pressed_last, self.decel_pressed_last, self.fastMode, self.fast_mode_enabled, vEgo, self.v_cruise_last_changed, self.LoC.longPlan, self.speed_limit_last_deactivated)
+        self.v_cruise_kph = update_v_cruise(v_cruise, CS.buttonEvents, self.enabled and CS.cruiseState.enabled, cur_time, self.accel_pressed,self.decel_pressed, self.accel_pressed_last, self.decel_pressed_last, self.fastMode, self.fast_mode_enabled, vEgo, self.v_cruise_last_changed, self.LoC.longPlan, self.speed_limit_last_deactivated, speed_limit_active)
       
         self.v_cruise_kph = self.v_cruise_kph if self.is_metric else int(round((float(round(self.v_cruise_kph))-0.0995)/0.6233))
         

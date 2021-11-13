@@ -18,8 +18,8 @@ ButtonType = car.CarState.ButtonEvent.Type
 EventName = car.CarEvent.EventName
 
 class CarInterface(CarInterfaceBase):
-  self.params_check_last_t = 0.
-  self.params_check_freq = 0.1 # check params at 10Hz
+  params_check_last_t = 0.
+  params_check_freq = 0.1 # check params at 10Hz
   
   @staticmethod
   def get_pid_accel_limits(CP, current_speed, cruise_speed):

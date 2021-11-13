@@ -49,6 +49,7 @@ class CarState(CarStateBase):
     self.params_check_freq = 0.1 # check params at 10Hz
     
     self.coasting_enabled = self._params.get_bool("Coasting")
+    self.coasting_enabled_last = self.coasting_enabled
     self.no_friction_braking = self._params.get_bool("RegenBraking")
     self.coasting_brake_over_speed_enabled = self._params.get_bool("CoastingBrakeOverSpeed")
     self.coasting_over_speed_vEgo_BP = [1.25, 1.3]
@@ -130,19 +131,19 @@ class CarState(CarStateBase):
     ret.vEgo, ret.aEgo = self.update_speed_kf(ret.vEgoRaw)
     self.vEgo = ret.vEgo
     ret.standstill = ret.vEgoRaw < 0.01
-    
+
+    self.coasting_enabled_last = self.coasting_enabled
     if t - self.params_check_last_t >= self.params_check_freq:
       self.params_check_last_t = t
-      coasting_enabled = self._params.get_bool("Coasting")
+      self.coasting_enabled = self._params.get_bool("Coasting")
       self.one_pedal_pause_steering_enabled = self._params.get_bool("OnePedalPauseBlinkerSteering")
       self.one_pedal_mode_enabled = self._params.get_bool("OnePedalMode")
       self.one_pedal_mode_engage_on_gas_enabled = self._params.get_bool("OnePedalModeEngageOnGas") and (self.one_pedal_mode_enabled or not self.disengage_on_gas)
       
-    if coasting_enabled != self.coasting_enabled:
-      if not coasting_enabled and self.vEgo > self.v_cruise_kph * CV.KPH_TO_MS and not self.no_friction_braking:
+    if self.coasting_enabled != self.coasting_enabled_last:
+      if not self.coasting_enabled and self.vEgo > self.v_cruise_kph * CV.KPH_TO_MS and not self.no_friction_braking:
         self._params.set_bool("Coasting", True)
-        coasting_enabled = True
-    self.coasting_enabled = coasting_enabled
+        self.coasting_enabled = True
     ret.coastingActive = self.coasting_enabled
 
     self.angle_steers = pt_cp.vl["PSCMSteeringAngle"]['SteeringWheelAngle']

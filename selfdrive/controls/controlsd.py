@@ -59,6 +59,8 @@ class Controls:
     self.accel_pressed_last = 0.
     self.decel_pressed_last = 0.
     self.fastMode = False
+    
+    self.params_check_last_t = 0.
 
     # Setup sockets
     self.pm = pm
@@ -397,9 +399,11 @@ class Controls:
       vEgo = getattr(CS, "vEgo", None)
       vEgo = int(round((float(vEgo) * 3.6 if self.is_metric else int(round((float(vEgo) * 3.6 * 0.6233 + 0.0995)))))) if vEgo else v_cruise
       
-      params = Params()
-      speed_limit_active = params.get_bool("SpeedLimitControl")
+      if cur_time - self.params_check_last_t >= self.CI.CS.params_check_freq:
+        self.params_check_last_t = cur_time
+        self.speed_limit_active = self.CI.CS._params.get_bool("SpeedLimitControl")
       
+      speed_limit_active = self.speed_limit_active
       if self.CI.CS.one_pedal_mode_engage_on_gas:
         self.CI.CS.one_pedal_mode_engage_on_gas = False
         self.CI.CS.one_pedal_v_cruise_kph_last = self.v_cruise_kph
@@ -420,8 +424,10 @@ class Controls:
         if self.v_cruise_kph != self.v_cruise_kph_last:
           self.v_cruise_last_changed = cur_time
       
-        if speed_limit_active and not params.get_bool("SpeedLimitControl"):
+        if self.speed_limit_active and not speed_limit_active:
           self.speed_limit_last_deactivated = cur_time
+          self.CI.CS._params.set_bool("SpeedLimitControl", False)
+          self.speed_limit_active = False
 
         if(self.accel_pressed or self.decel_pressed):
           if self.v_cruise_kph_last != self.v_cruise_kph:

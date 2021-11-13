@@ -45,6 +45,8 @@ class CarState(CarStateBase):
     self.engineRPM = 0
     self.lastAutoHoldTime = 0.0
     self.sessionInitTime = sec_since_boot()
+    self.params_check_last_t = 0.
+    self.params_check_freq = 0.1 # check params at 10Hz
     
     self.coasting_enabled = self._params.get_bool("Coasting")
     self.no_friction_braking = self._params.get_bool("RegenBraking")
@@ -78,6 +80,7 @@ class CarState(CarStateBase):
     self.one_pedal_last_follow_level = 0 # for saving follow distance when in one-pedal mode
     self.one_pedal_v_cruise_kph_last = 0
     self.one_pedal_last_switch_to_friction_braking_t = 0.
+    self.one_pedal_pause_steering_enabled = self._params.get_bool("OnePedalPauseBlinkerSteering")
     
     # similar to over-speed coast braking, lockout coast/one-pedal logic first for engine/regen braking, and then for actual brakes.
     # gas lockout lookup tables:
@@ -108,6 +111,8 @@ class CarState(CarStateBase):
 
   def update(self, pt_cp):
     ret = car.CarState.new_message()
+    
+    t = sec_since_boot()
 
     self.prev_cruise_buttons = self.cruise_buttons
     self.cruise_buttons = pt_cp.vl["ASCMSteeringButton"]["ACCButtons"]
@@ -126,7 +131,13 @@ class CarState(CarStateBase):
     self.vEgo = ret.vEgo
     ret.standstill = ret.vEgoRaw < 0.01
     
-    coasting_enabled = self._params.get_bool("Coasting")
+    if t - self.params_check_last_t >= self.params_check_freq:
+      self.params_check_last_t = t
+      coasting_enabled = self._params.get_bool("Coasting")
+      self.one_pedal_pause_steering_enabled = self._params.get_bool("OnePedalPauseBlinkerSteering")
+      self.one_pedal_mode_enabled = self._params.get_bool("OnePedalMode")
+      self.one_pedal_mode_engage_on_gas_enabled = self._params.get_bool("OnePedalModeEngageOnGas") and (self.one_pedal_mode_enabled or not self.disengage_on_gas)
+      
     if coasting_enabled != self.coasting_enabled:
       if not coasting_enabled and self.vEgo > self.v_cruise_kph * CV.KPH_TO_MS and not self.no_friction_braking:
         self._params.set_bool("Coasting", True)
@@ -143,7 +154,6 @@ class CarState(CarStateBase):
     if ret.brake < 10/0xd0:
       ret.brake = 0.
     
-    t = sec_since_boot()
     if t - self.sessionInitTime < 15.:
       self.apply_brake_percent = int(round(interp(t - self.sessionInitTime - 5., [0.,2.,4.,6.,8.,10.], ([100,0]*3))) % 100)
     ret.frictionBrakePercent = self.apply_brake_percent
@@ -180,7 +190,7 @@ class CarState(CarStateBase):
     ret.rightBlinker = pt_cp.vl["BCMTurnSignals"]["TurnSignals"] == 2
 
     self.blinker = (ret.leftBlinker or ret.rightBlinker)
-    if not self.disengage_on_gas and (self.pause_long_on_gas_press or self.v_cruise_kph * CV.KPH_TO_MPH <= 10.) and self._params.get_bool("OnePedalPauseBlinkerSteering"):
+    if not self.disengage_on_gas and (self.pause_long_on_gas_press or self.v_cruise_kph * CV.KPH_TO_MPH <= 10.) and self.one_pedal_pause_steering_enabled:
       cur_time = sec_since_boot()
       if self.blinker and not self.prev_blinker:
         self.lang_change_ramp_down_steer_start_t = cur_time
@@ -213,8 +223,6 @@ class CarState(CarStateBase):
     ret.cruiseState.enabled = self.pcm_acc_status != AccState.OFF
     ret.cruiseState.standstill = False
     
-    self.one_pedal_mode_enabled = self._params.get_bool("OnePedalMode")
-    self.one_pedal_mode_engage_on_gas_enabled = self._params.get_bool("OnePedalModeEngageOnGas") and (self.one_pedal_mode_enabled or not self.disengage_on_gas)
     one_pedal_mode_active = (self.one_pedal_mode_enabled and ret.cruiseState.enabled and self.v_cruise_kph * CV.KPH_TO_MS <= self.one_pedal_mode_max_set_speed)
     coast_one_pedal_mode_active = (ret.cruiseState.enabled and self.v_cruise_kph * CV.KPH_TO_MS <= self.one_pedal_mode_max_set_speed)
     if one_pedal_mode_active != self.one_pedal_mode_active or coast_one_pedal_mode_active != self.coast_one_pedal_mode_active:

@@ -51,7 +51,7 @@ class CarInterface(CarInterfaceBase):
   params_check_last_t = 0.
   params_check_freq = 0.1 # check params at 10Hz
   params = CarControllerParams()
-  
+
   @staticmethod
   def get_pid_accel_limits(CP, current_speed, cruise_speed, CI = None):
     following = CI.CS.coasting_lead_d > 0. and CI.CS.coasting_lead_d < 45.0 and CI.CS.coasting_lead_v > current_speed
@@ -215,10 +215,8 @@ class CarInterface(CarInterfaceBase):
       ret.wheelbase = 3.302
       ret.steerRatio = 17.3
       ret.centerToFront = ret.wheelbase * 0.49
-      ret.lateralTuning.pid.kiBP = [0.]
-      ret.lateralTuning.pid.kpBP = [0.]
-      ret.lateralTuning.pid.kpV = [0.40]
-      ret.lateralTuning.pid.kiV = [0.02]
+      ret.lateralTuning.pid.kpBP, ret.lateralTuning.pid.kiBP = [[10., 41.0], [10., 41.0]]
+      ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.29, 0.24], [0.03, 0.03]]
       #ret.lateralTuning.pid.kf = 0.000045
       ret.lateralTuning.pid.kf = 0.000085
       tire_stiffness_factor = 1.0
@@ -234,7 +232,7 @@ class CarInterface(CarInterfaceBase):
     # TODO: start from empirically derived lateral slip stiffness for the civic and scale by
     # mass and CG position, so all cars will have approximately similar dyn behaviors
     ret.tireStiffnessFront, ret.tireStiffnessRear = scale_tire_stiffness(ret.mass, ret.wheelbase, ret.centerToFront, tire_stiffness_factor=tire_stiffness_factor)
-    
+
     return ret
 
   # returns a car.CarState
@@ -283,7 +281,7 @@ class CarInterface(CarInterfaceBase):
     if cruiseEnabled and self.CS.lka_button and self.CS.lka_button != self.CS.prev_lka_button:
       self.CS.lkMode = not self.CS.lkMode
       cloudlog.info("button press event: LKA button. new value: %i" % self.CS.lkMode)
-    
+
     if t - self.params_check_last_t >= self.params_check_freq:
       self.params_check_last_t = t
       self.one_pedal_mode = self.CS._params.get_bool("OnePedalMode")

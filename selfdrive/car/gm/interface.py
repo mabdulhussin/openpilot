@@ -49,8 +49,7 @@ class CarInterface(CarInterfaceBase):
   params = CarControllerParams()
   
   @staticmethod
-  def get_pid_accel_limits(CP, current_speed, cruise_speed):
-    following = self.CS.coasting_lead_d > 0. and self.CS.coasting_lead_d < 45.0 and self.CS.coasting_lead_v > current_speed
+  def get_pid_accel_limits(CP, current_speed, cruise_speed, following = False):
     accel_limits = calc_cruise_accel_limits(current_speed, following, self.CS.accel_mode)
     return [max(params.ACCEL_MIN, accel_limits[0]), min(accel_limits[1],params.ACCEL_MAX)]
 

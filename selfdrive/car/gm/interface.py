@@ -42,7 +42,7 @@ class CarInterface(CarInterfaceBase):
   def get_steer_feedforward_escalade_esv(desired_angle, v_ego):
     desired_angle *= 0.0151785
     sigmoid = desired_angle / (1 + fabs(desired_angle))
-    return 0.11849933 * sigmoid * (v_ego + 15)
+    return 0.11849933 * sigmoid * (v_ego + 13)
 
   def get_steer_feedforward_function(self):
     if self.CP.carFingerprint == CAR.VOLT:
@@ -181,7 +181,7 @@ class CarInterface(CarInterfaceBase):
       #ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[10., 41.0], [10., 41.0]]
       #ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.13, 0.24], [0.01, 0.02]]
       #ret.lateralTuning.pid.kf = 0.000045
-      tire_stiffness_factor = 3.0
+      tire_stiffness_factor = 1.0
       ret.lateralTuning.pid.kf = 1. # get_steer_feedforward_escalade_esv()
       #ret.startAccel = 1.8  # Accelerate from 0 faster
       #ret.stoppingDecelRate = 0.3  # reach stopping target smoothly

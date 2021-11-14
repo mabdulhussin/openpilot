@@ -100,7 +100,7 @@ TogglesPanel::TogglesPanel(QWidget *parent) : QWidget(parent) {
                                   "../assets/offroad/icon_speed_limit_percent.png",
                                   this));
   toggles.append(new ParamControl("StockSpeedAdjust",
-                                  "Like stock ACC speed adjustment",
+                                  "Stock cruise speed adjustment",
                                   "Like stock ACC, press/hold the cruise accel/decel buttons for 1mph/5mph.",
                                   "../assets/offroad/icon_stock_adjust_speed.png",
                                   this));
@@ -155,7 +155,7 @@ TogglesPanel::TogglesPanel(QWidget *parent) : QWidget(parent) {
                                   "../assets/offroad/icon_car_pedal.png",
                                   this));
   toggles.append(new ParamControl("OnePedalModeEngageOnGas",
-                                  "[GM] One-pedal/Steer engage on gas",
+                                  "[GM] One-pedal engage on gas",
                                   "When you press the gas in cruise mode at speed (i.e. not when resuming from a stop), enter one-pedal/always-on-steering mode. Increase or reset speed to return to normal cruise.",
                                   "../assets/offroad/icon_car_pedal.png",
                                   this));
@@ -165,13 +165,13 @@ TogglesPanel::TogglesPanel(QWidget *parent) : QWidget(parent) {
                                   "../assets/offroad/icon_brake_disc.png",
                                   this));
   toggles.append(new ParamControl("CustomSounds",
-                                  "Alternative sounds (Tap Me)",
-                                  "Uses alternative set of sound effects. (2x restart car to apply)",
+                                  "Alternative sounds (tap me)",
+                                  "Uses alternative set of sound effects. Restart car twice for changes to apply.",
                                   "../assets/offroad/icon_custom_sounds.png",
                                   this));
   toggles.append(new ParamControl("SilentEngageDisengage",
-                                  "Silent engage/disengage (Tap Me)",
-                                  "Mute engage and disengage sounds. (2x restart car to apply)",
+                                  "Silent engage/disengage (tap me)",
+                                  "Mute engage and disengage sounds. Restart car twice for changes to apply.",
                                   "../assets/offroad/icon_mute.png",
                                   this));
   toggles.append(new ParamControl("ShowDebugUI",

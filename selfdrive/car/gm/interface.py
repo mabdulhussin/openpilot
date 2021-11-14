@@ -47,7 +47,7 @@ class CarInterface(CarInterfaceBase):
   params_check_last_t = 0.
   params_check_freq = 0.1 # check params at 10Hz
   params = CarControllerParams()
-  
+
   @staticmethod
   def get_pid_accel_limits(CP, current_speed, cruise_speed, CI = None):
     following = CI.CS.coasting_lead_d > 0. and CI.CS.coasting_lead_d < 45.0 and CI.CS.coasting_lead_v > current_speed
@@ -69,11 +69,19 @@ class CarInterface(CarInterfaceBase):
     sigmoid = desired_angle / (1 + fabs(desired_angle))
     return 0.04689655 * sigmoid * (v_ego + 10.028217)
 
+  @staticmethod
+  def get_steer_feedforward_escalade_esv(desired_angle, v_ego):
+    desired_angle *= 0.0151785
+    sigmoid = desired_angle / (1 + fabs(desired_angle))
+    return 0.11849933 * sigmoid * (v_ego + 10.028217)
+
   def get_steer_feedforward_function(self):
     if self.CP.carFingerprint == CAR.VOLT:
       return self.get_steer_feedforward_volt
     elif self.CP.carFingerprint == CAR.ACADIA:
       return self.get_steer_feedforward_acadia
+    elif self.CP.carFingerprint == CAR.ESCALADE_ESV:
+      return self.get_steer_feedforward_escalade_esv
     else:
       return CarInterfaceBase.get_steer_feedforward_default
 
@@ -203,8 +211,12 @@ class CarInterface(CarInterfaceBase):
       ret.centerToFront = ret.wheelbase * 0.49
       ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[10., 41.0], [10., 41.0]]
       ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.13, 0.24], [0.01, 0.02]]
-      ret.lateralTuning.pid.kf = 0.000045
-      tire_stiffness_factor = 1.0
+      #ret.lateralTuning.pid.kf = 0.000045
+      tire_stiffness_factor = 3.0
+      ret.lateralTuning.pid.kf = 1. # get_steer_feedforward_escalade_esv()
+      #ret.startAccel = 1.8  # Accelerate from 0 faster
+      #ret.stoppingDecelRate = 0.3  # reach stopping target smoothly
+      #ret.startingAccelRate = 6.0  # release brakes fast
 
     # TODO: get actual value, for now starting with reasonable value for
     # civic and scaling by mass and wheelbase
@@ -263,7 +275,7 @@ class CarInterface(CarInterfaceBase):
     if cruiseEnabled and self.CS.lka_button and self.CS.lka_button != self.CS.prev_lka_button:
       self.CS.lkMode = not self.CS.lkMode
       cloudlog.info("button press event: LKA button. new value: %i" % self.CS.lkMode)
-    
+
     if t - self.params_check_last_t >= self.params_check_freq:
       self.params_check_last_t = t
       self.one_pedal_mode = self.CS._params.get_bool("OnePedalMode")

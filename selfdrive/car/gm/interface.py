@@ -49,8 +49,9 @@ class CarInterface(CarInterfaceBase):
   params = CarControllerParams()
   
   @staticmethod
-  def get_pid_accel_limits(CP, current_speed, cruise_speed, following = False):
-    accel_limits = calc_cruise_accel_limits(current_speed, following, self.CS.accel_mode)
+  def get_pid_accel_limits(CP, current_speed, cruise_speed, CI = None):
+    following = CI.CS.coasting_lead_d > 0. and CI.CS.coasting_lead_d < 45.0 and CI.CS.coasting_lead_v > current_speed
+    accel_limits = calc_cruise_accel_limits(current_speed, following, CI.CS.accel_mode)
     return [max(params.ACCEL_MIN, accel_limits[0]), min(accel_limits[1],params.ACCEL_MAX)]
 
   # Volt determined by iteratively plotting and minimizing error for f(angle, speed) = steer.

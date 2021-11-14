@@ -539,8 +539,7 @@ class Controls:
 
     if not self.joystick_mode:
       # accel PID loop
-      following = self.CI.CS.coasting_lead_d > 0. and self.CI.CS.coasting_lead_d < 45.0 and self.CI.CS.coasting_lead_v > current_speed
-      pid_accel_limits = self.CI.get_pid_accel_limits(self.CP, CS.vEgo, self.v_cruise_kph * CV.KPH_TO_MS, following)
+      pid_accel_limits = self.CI.get_pid_accel_limits(self.CP, CS.vEgo, self.v_cruise_kph * CV.KPH_TO_MS, self.CI)
       actuators.accel, self.v_target, self.a_target = self.LoC.update(self.active, CS, self.CP, long_plan, pid_accel_limits)
       
       self.CI.CS.coasting_long_plan = self.LoC.longPlan

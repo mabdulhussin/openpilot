@@ -38,19 +38,19 @@ class CarInterface(CarInterfaceBase):
     sigmoid = desired_angle / (1 + fabs(desired_angle))
     return 0.04689655 * sigmoid * (v_ego + 10.028217)
 
-  @staticmethod
-  def get_steer_feedforward_escalade_esv(desired_angle, v_ego):
-    desired_angle *= 0.0151785
-    sigmoid = desired_angle / (1 + fabs(desired_angle))
-    return 0.11849933 * sigmoid * (v_ego + 7)
+  #@staticmethod
+  #def get_steer_feedforward_escalade_esv(desired_angle, v_ego):
+    #desired_angle *= 0.0151785
+    #sigmoid = desired_angle / (1 + fabs(desired_angle))
+    #return 0.11849933 * sigmoid * (v_ego + 7)
 
   def get_steer_feedforward_function(self):
     if self.CP.carFingerprint == CAR.VOLT:
       return self.get_steer_feedforward_volt
     elif self.CP.carFingerprint == CAR.ACADIA:
       return self.get_steer_feedforward_acadia
-    elif self.CP.carFingerprint == CAR.ESCALADE_ESV:
-      return self.get_steer_feedforward_escalade_esv
+    #elif self.CP.carFingerprint == CAR.ESCALADE_ESV:
+    #  return self.get_steer_feedforward_escalade_esv
     else:
       return CarInterfaceBase.get_steer_feedforward_default
 
@@ -181,8 +181,9 @@ class CarInterface(CarInterfaceBase):
       ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[10., 41.0], [10., 41.0]]
       ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.13, 0.24], [0.01, 0.02]]
       #ret.lateralTuning.pid.kf = 0.000045
+      rret.lateralTuning.pid.kf = 0.00008
       tire_stiffness_factor = 1.0
-      ret.lateralTuning.pid.kf = 1. # get_steer_feedforward_escalade_esv()
+      #ret.lateralTuning.pid.kf = 1. # get_steer_feedforward_escalade_esv()
       #ret.startAccel = 1.8  # Accelerate from 0 faster
       #ret.stoppingDecelRate = 0.3  # reach stopping target smoothly
       #ret.startingAccelRate = 6.0  # release brakes fast

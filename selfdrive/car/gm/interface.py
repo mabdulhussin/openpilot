@@ -23,7 +23,7 @@ _A_CRUISE_MIN_BP = [0., 5., 10., 20., 55.]
 # need fast accel at very low speed for stop and go
 # make sure these accelerations are smaller than mpc limits
 _A_CRUISE_MAX_V = [1.2, 1.4, 1.2, 0.9, 0.7]
-_A_CRUISE_MAX_V_SPORT = [2.5, 2.9, 2.5, 1.4, 1.2]
+_A_CRUISE_MAX_V_SPORT = [2.2, 2.4, 2.2, 1.1, 0.9]
 _A_CRUISE_MAX_V_FOLLOWING = [1.6, 1.8, 1.6, .9, .7]
 _A_CRUISE_MAX_BP = [0., 5., 10., 20., 55.]
 
@@ -147,7 +147,6 @@ class CarInterface(CarInterfaceBase):
 
       # Only tuned to reduce oscillations. TODO.
       ret.longitudinalTuning.kpV = [1.7, 1.3]
-      ret.longitudinalTuning.kiV = [0.36]
 
     elif candidate == CAR.MALIBU:
       # supports stop and go, but initial engage must be above 18mph (which include conservatism)
@@ -169,17 +168,13 @@ class CarInterface(CarInterfaceBase):
 
     elif candidate == CAR.ACADIA:
       ret.minEnableSpeed = -1.  # engage speed is decided by pcm
-      ret.mass = 3956. * CV.LB_TO_KG + STD_CARGO_KG # from vin decoder
+      ret.mass = 4353 * CV.LB_TO_KG + STD_CARGO_KG # from vin decoder
       ret.wheelbase = 2.86 # Confirmed from vin decoder
-      ret.steerRatio = 16.5  # end to end is 13.46 - seems to be undocumented, using JYoung value
+      ret.steerRatio = 14.4  # end to end is 13.46 - seems to be undocumented, using JYoung value
       ret.steerRatioRear = 0.
       ret.centerToFront = ret.wheelbase * 0.4
-      ret.lateralTuning.pid.kpBP = [0.]
-      ret.lateralTuning.pid.kpV = [0.2]
-      ret.lateralTuning.pid.kiBP = [0.]
-      ret.lateralTuning.pid.kiV = [0.]
       ret.lateralTuning.pid.kf = 1. # get_steer_feedforward_acadia()
-      ret.steerActuatorDelay = 0.1
+      ret.longitudinalTuning.kpV = [1.9, 1.5]
 
     elif candidate == CAR.BUICK_REGAL:
       ret.minEnableSpeed = 18 * CV.MPH_TO_MS
@@ -311,7 +306,7 @@ class CarInterface(CarInterfaceBase):
             tmp_params = Params()
             tmp_params.put("OnePedalBrakeMode", str(self.CS.one_pedal_brake_mode))
             tmp_params.put_bool("OnePedalMode", self.CS.one_pedal_mode_enabled)
-          elif self.CS.distance_button and self.CS.pause_long_on_gas_press and t - self.CS.distance_button_last_press_t < 0.4 and t - self.CS.one_pedal_last_switch_to_friction_braking_t > 1.: # on the second press of a double tap while the gas is pressed, turn off one-pedal braking
+          elif self.CS.distance_button and (self.CS.pause_long_on_gas_press or self.CS.out.standstill) and t - self.CS.distance_button_last_press_t < 0.4 and t - self.CS.one_pedal_last_switch_to_friction_braking_t > 1.: # on the second press of a double tap while the gas is pressed, turn off one-pedal braking
             # cycle the brake mode back to nullify the first press
             cloudlog.info("button press event: Disengaging one-pedal mode with distace button double-press.")
             self.CS.distance_button_last_press_t = t + 0.5

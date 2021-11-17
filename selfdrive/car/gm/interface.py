@@ -208,17 +208,34 @@ class CarInterface(CarInterfaceBase):
       ret.minEnableSpeed = -1.  # engage speed is decided by pcm
       ret.mass = 2739. + STD_CARGO_KG
       ret.wheelbase = 3.302
-      ret.steerRatio = 17.3
+      ret.steerRatio = 20
       ret.centerToFront = ret.wheelbase * 0.49
       ret.lateralTuning.pid.kpBP, ret.lateralTuning.pid.kiBP = [[10., 41.0], [10., 41.0]]
-      ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.20, 0.25], [0.01, 0.02]]
+      ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.21, 0.26], [0.01, 0.02]]
       #ret.lateralTuning.pid.kf = 0.000045
-      ret.lateralTuning.pid.kf = 0.000085
+      ret.lateralTuning.pid.kf = 0.0001
       tire_stiffness_factor = 1.0
       #ret.lateralTuning.pid.kf = 1. # get_steer_feedforward_escalade_esv()
       #ret.startAccel = 1.8  # Accelerate from 0 faster
       #ret.stoppingDecelRate = 0.3  # reach stopping target smoothly
       #ret.startingAccelRate = 6.0  # release brakes fast
+
+
+      ## Tuning Tips
+      ##
+      ## Kp too high - the car overshoots and undershoots center
+      ##
+      ## Kp too low - the car doesn't turn enough
+      ##
+      ## Ki too high - it gets to center without oscillations, but it takes too long to center. If you hit a bump or give the wheel a quick nudge, it should oscillate 3 - 5 times before coming to steady-state. If the wheel oscillates forever (critically damped), then your Kp or Ki or both are too high.
+      ##
+      ## Ki too low - you get oscillations trying to reach the center
+      ##
+      ## steerRatio too high - the car ping pongs on straights and turns. If you're on a turn and the wheel is oversteering and then correcting, steerRatio is too high, and it's fighting with Kp and Ki (which you don't want) - although in the past I've been able to have an oscillating oversteering tune which could do tighter turns, but the turns weren't pleasant.
+      ##
+      ## steerRatio too low - the car doesn't turn enough on curves.
+      ##
+      ## Kf - lower this if your car oscillates and you've done everything else. It can be lowered to 0
 
     # TODO: get actual value, for now starting with reasonable value for
     # civic and scaling by mass and wheelbase

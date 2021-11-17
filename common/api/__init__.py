@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from common.basedir import PERSIST
 from selfdrive.version import version
 
-API_HOST = os.getenv('API_HOST', 'https://api.retropilot.org')
+API_HOST = os.getenv('API_HOST', 'https://retropilot.twoitguys.com')
 
 class Api():
   def __init__(self, dongle_id):
@@ -34,7 +34,7 @@ class Api():
     if isinstance(token, bytes):
       token = token.decode('utf8')
     return token
-    
+
 
 def api_get(endpoint, method='GET', timeout=None, access_token=None, **params):
   headers = {}

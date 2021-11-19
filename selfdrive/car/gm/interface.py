@@ -208,10 +208,10 @@ class CarInterface(CarInterfaceBase):
       ret.minEnableSpeed = -1.  # engage speed is decided by pcm
       ret.mass = 2739. + STD_CARGO_KG
       ret.wheelbase = 3.302
-      ret.steerRatio = 30
+      ret.steerRatio = 40
       ret.centerToFront = ret.wheelbase * 0.49
       ret.lateralTuning.pid.kpBP, ret.lateralTuning.pid.kiBP = [[10., 41.0], [10., 41.0]]
-      ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.22, 0.26], [0.01, 0.02]]
+      ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.23, 0.27], [0.01, 0.02]]
       #ret.lateralTuning.pid.kf = 0.00012
       tire_stiffness_factor = 1.0
       ret.lateralTuning.pid.kf = 1. # get_steer_feedforward_escalade_esv()
